@@ -1,7 +1,3 @@
-abstract class CartEvent {}
+abstract class CartScreenEvent {}
 
-class IncrementBadge extends CartEvent {}
-
-class DecrementBadge extends CartEvent {}
-
-class ButtonPressed extends CartEvent {}
+class IncrementEvent extends CartScreenEvent {}
