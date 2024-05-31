@@ -1,5 +1,6 @@
 import 'package:catalogue_app/bloc/cart_bloc.dart';
 import 'package:catalogue_app/bloc/cart_state.dart';
+import 'package:catalogue_app/page/cart_page.dart';
 import 'package:catalogue_app/widget/product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,18 +26,44 @@ class _ProductListPageState extends State<ProductListPage> {
             centerTitle: true,
             actions: [
               Center(
-                child: Stack(alignment: Alignment.topRight, children: [
-                  const Icon(Icons.shopping_bag_outlined, size: 35),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Container(
-                        padding: const EdgeInsets.only(left: 6),
-                        height: 20,
-                        width: 20,
-                        color: Colors.red,
-                        child: Text(state.noOfItems.toString())),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CartPage(
+                          cartItemModelList: state.cartItemsList,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Hero(
+                    tag: 'cart-home',
+                    flightShuttleBuilder: (flightContext, animation, direction,
+                        fromContext, toContext) {
+                      return ScaleTransition(
+                        scale: animation.drive(Tween(begin: 0.1, end: 1.0)
+                            .chain(CurveTween(curve: Curves.bounceInOut))),
+                        child: fromContext.widget,
+                      );
+                    },
+                    child: Badge(
+                      largeSize: 20,
+                      smallSize: 20,
+                      backgroundColor: Colors.purple[300],
+                      label: Text(
+                        state.cartItemsList.length.toString(),
+                        style: const TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.bold),
+                      ),
+                      textColor: Colors.white,
+                      child: const Icon(
+                        Icons.shopping_cart,
+                        size: 30,
+                      ),
+                    ),
                   ),
-                ]),
+                ),
               ),
               const SizedBox(
                 width: 30,
